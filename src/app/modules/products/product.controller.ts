@@ -27,7 +27,10 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const result = await productServices.getAllProductFromDB();
+    const searchTerm = req?.query?.searchTerm;
+    const result = await productServices.getAllProductFromDB(
+      searchTerm as string,
+    );
     res.json({
       success: true,
       message: 'Products are retrieve successfully',
@@ -81,7 +84,7 @@ const updateSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
-const deleteSingleUser = async (req: Request, res: Response) => {
+const deleteSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const result = await productServices.deleteSingleProductFromDB(productId);
@@ -104,5 +107,5 @@ export const productController = {
   getAllProduct,
   getSingleProduct,
   updateSingleProduct,
-  deleteSingleUser
+  deleteSingleProduct,
 };
