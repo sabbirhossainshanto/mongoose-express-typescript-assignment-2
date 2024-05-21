@@ -10,13 +10,14 @@ app.use(express.json());
 app.use(cors());
 
 //applications route
-
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
+
 
 app.all('*', (req: Request, res: Response) => {
   res.status(400).json({
