@@ -1,5 +1,10 @@
 import { Schema, model } from 'mongoose';
-import { TInventory, TProduct, TVariants } from './products.interface';
+import {
+  ProductModel,
+  TInventory,
+  TProduct,
+  TVariants,
+} from './products.interface';
 
 const variantsSchema = new Schema<TVariants>({
   type: {
@@ -23,7 +28,7 @@ const inventorySchema = new Schema<TInventory>({
   },
 });
 
-const productSchema = new Schema<TProduct>({
+const productSchema = new Schema<TProduct, ProductModel>({
   name: {
     type: String,
     required: true,
@@ -54,4 +59,10 @@ const productSchema = new Schema<TProduct>({
   },
 });
 
-export const Product = model<TProduct>('Product', productSchema);
+
+productSchema.statics.isProductExist = async function (id: string) {
+  const existingProduct = Product.findOne({ _id: id });
+  return existingProduct
+};
+
+export const Product = model<TProduct, ProductModel>('Product', productSchema);

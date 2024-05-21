@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { isValidObjectId } from '../../utils';
 import { TProduct } from './products.interface';
 import { Product } from './products.model';
 
@@ -14,6 +15,7 @@ const getAllProductFromDB = async (query: string) => {
       $or: [
         { name: { $regex: query, $options: 'i' } },
         { description: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } },
       ],
     };
   }
@@ -22,16 +24,40 @@ const getAllProductFromDB = async (query: string) => {
 };
 
 const getSingleProductFromDB = async (id: string) => {
-  const result = await Product.findById(id);
+  /* Check for valid ObjectId */
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid product ID');
+  }
+  /* Throw error if the product is not exist */
+  if (!(await Product.isProductExist(id))) {
+    throw new Error('Product not exist');
+  }
+  const result = await Product.findOne({ _id: id });
   return result;
 };
 
 const updateSingleProductFromDB = async (id: string, product: any) => {
+  /* Check for valid ObjectId */
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid product ID');
+  }
+  /* Throw error if the product is not exist */
+  if (!(await Product.isProductExist(id))) {
+    throw new Error('Product not exist');
+  }
   const result = await Product.updateOne({ _id: id }, { $set: product });
   return result;
 };
 
 const deleteSingleProductFromDB = async (id: string) => {
+  /* Check for valid ObjectId */
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid product ID');
+  }
+  /* Throw error if the product is not exist */
+  if (!(await Product.isProductExist(id))) {
+    throw new Error('Product not exist');
+  }
   const result = await Product.deleteOne({ _id: id });
   return result;
 };

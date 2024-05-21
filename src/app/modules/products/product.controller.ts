@@ -70,7 +70,9 @@ const updateSingleProduct = async (req: Request, res: Response) => {
     const { productId } = req.params;
     const product = req.body;
     const parseProduct = updateProductValidationSchema.parse(product);
+
     await productServices.updateSingleProductFromDB(productId, parseProduct);
+  
     const result = await productServices.getSingleProductFromDB(productId);
     res.json({
       success: true,
@@ -89,6 +91,7 @@ const updateSingleProduct = async (req: Request, res: Response) => {
 const deleteSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
+   
     const result = await productServices.deleteSingleProductFromDB(productId);
     res.json({
       success: true,
