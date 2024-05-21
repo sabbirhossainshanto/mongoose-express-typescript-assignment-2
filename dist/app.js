@@ -15,7 +15,7 @@ app.use((0, cors_1.default)());
 app.use('/api/products', product_route_1.productRoutes);
 app.use('/api/orders', order_route_1.orderRoutes);
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send({ message: 'Welcome to the Ecommerce API services' });
 });
 app.all('*', (req, res) => {
     res.status(400).json({

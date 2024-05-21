@@ -10,6 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productServices = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const utils_1 = require("../../utils");
 const products_model_1 = require("./products.model");
 const createProductIntoDB = (product) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield products_model_1.Product.create(product);
@@ -22,6 +24,7 @@ const getAllProductFromDB = (query) => __awaiter(void 0, void 0, void 0, functio
             $or: [
                 { name: { $regex: query, $options: 'i' } },
                 { description: { $regex: query, $options: 'i' } },
+                { category: { $regex: query, $options: 'i' } },
             ],
         };
     }
@@ -29,7 +32,11 @@ const getAllProductFromDB = (query) => __awaiter(void 0, void 0, void 0, functio
     return result;
 });
 const getSingleProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log(await Product.isProductExist(id));
+    /* Check for valid ObjectId */
+    if (!(0, utils_1.isValidObjectId)(id)) {
+        throw new Error('Invalid product ID');
+    }
+    /* Throw error if the product is not exist */
     if (!(yield products_model_1.Product.isProductExist(id))) {
         throw new Error('Product not exist');
     }
@@ -37,6 +44,11 @@ const getSingleProductFromDB = (id) => __awaiter(void 0, void 0, void 0, functio
     return result;
 });
 const updateSingleProductFromDB = (id, product) => __awaiter(void 0, void 0, void 0, function* () {
+    /* Check for valid ObjectId */
+    if (!(0, utils_1.isValidObjectId)(id)) {
+        throw new Error('Invalid product ID');
+    }
+    /* Throw error if the product is not exist */
     if (!(yield products_model_1.Product.isProductExist(id))) {
         throw new Error('Product not exist');
     }
@@ -44,6 +56,14 @@ const updateSingleProductFromDB = (id, product) => __awaiter(void 0, void 0, voi
     return result;
 });
 const deleteSingleProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    /* Check for valid ObjectId */
+    if (!(0, utils_1.isValidObjectId)(id)) {
+        throw new Error('Invalid product ID');
+    }
+    /* Throw error if the product is not exist */
+    if (!(yield products_model_1.Product.isProductExist(id))) {
+        throw new Error('Product not exist');
+    }
     const result = yield products_model_1.Product.deleteOne({ _id: id });
     return result;
 });

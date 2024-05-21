@@ -6,8 +6,8 @@ import { createOrderValidationSchema } from './order.validation';
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
-    const parseOrder = createOrderValidationSchema.parse(orderData);
-    const result = await orderServices.createOrderIntoDB(parseOrder);
+    const parseOrderData = createOrderValidationSchema.parse(orderData);
+    const result = await orderServices.createOrderIntoDB(parseOrderData);
     res.json({
       success: true,
       message: 'Order created successfully!',
