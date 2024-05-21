@@ -33,7 +33,9 @@ const getAllProduct = async (req: Request, res: Response) => {
     );
     res.json({
       success: true,
-      message: 'Products are retrieve successfully',
+      message: searchTerm
+        ? `Products matching search term ${searchTerm} fetched successfully`
+        : 'Products are retrieve successfully',
       data: result,
     });
   } catch (error: any) {
